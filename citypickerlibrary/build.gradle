@@ -35,5 +35,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.alibaba:arouter-api:1.2.1.1'
     annotationProcessor 'com.alibaba:arouter-compiler:1.1.2.1'
-    compile files('lib/AMap_Location_V3.5.0_20170731.jar')
+    compile files('lib/BaiduLBS_Android.jar')
 }

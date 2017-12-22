@@ -23,10 +23,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/CityPicker.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-
         <meta-data
-            android:name="com.amap.api.v2.apikey"
-            android:value="7d851983d126ecba5dcb95f5ef9d6b24" />
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="	2GUf6q3lfEgwp8ylty6WPhsbmjLBG3c9" >
+        </meta-data>
     </application>
 
 </manifest>
