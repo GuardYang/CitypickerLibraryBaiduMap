@@ -4,10 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingBottom="8dp"
+    android:id="@+id/hot_layout"
     android:orientation="vertical"
     tools:ignore="RtlHardcoded">
 
     <TextView
+        android:visibility="gone"
         style="@style/LetterIndexTextViewStyle"
         android:text="@string/cp_hot_city"/>
 

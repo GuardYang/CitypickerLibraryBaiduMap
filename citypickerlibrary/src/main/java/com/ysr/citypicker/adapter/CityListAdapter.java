@@ -2,6 +2,7 @@ package com.ysr.citypicker.adapter;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.ysr.citypicker.R;
 import com.ysr.citypicker.model.City;
 import com.ysr.citypicker.model.LocateState;
@@ -35,20 +37,26 @@ public class CityListAdapter extends BaseAdapter {
         this.mContext = mContext;
         this.mCities = mCities;
         this.inflater = LayoutInflater.from(mContext);
-        if (mCities == null){
+        if (mCities == null) {
             mCities = new ArrayList<>();
         }
+        JSONObject tmpObj = new JSONObject();
+        tmpObj.put("list", this.mCities);
+        String t = tmpObj + "";
+        Log.e("0000", t);
+
+
         mCities.add(0, new City("定位", "0"));
         mCities.add(1, new City("热门", "1"));
         int size = mCities.size();
         letterIndexes = new HashMap<>();
         sections = new String[size];
-        for (int index = 0; index < size; index++){
+        for (int index = 0; index < size; index++) {
             //当前城市拼音首字母
             String currentLetter = PinyinUtils.getFirstLetter(mCities.get(index).getPinyin());
             //上个首字母，如果不存在设为""
             String previousLetter = index >= 1 ? PinyinUtils.getFirstLetter(mCities.get(index - 1).getPinyin()) : "";
-            if (!TextUtils.equals(currentLetter, previousLetter)){
+            if (!TextUtils.equals(currentLetter, previousLetter)) {
                 letterIndexes.put(currentLetter, index);
                 sections[index] = currentLetter;
             }
@@ -57,9 +65,10 @@ public class CityListAdapter extends BaseAdapter {
 
     /**
      * 更新定位状态
+     *
      * @param state
      */
-    public void updateLocateState(int state, String city){
+    public void updateLocateState(int state, String city) {
         this.locateState = state;
         this.locatedCity = city;
         notifyDataSetChanged();
@@ -67,10 +76,11 @@ public class CityListAdapter extends BaseAdapter {
 
     /**
      * 获取字母索引的位置
+     *
      * @param letter
      * @return
      */
-    public int getLetterPosition(String letter){
+    public int getLetterPosition(String letter) {
         Integer integer = letterIndexes.get(letter);
         return integer == null ? -1 : integer;
     }
@@ -87,7 +97,7 @@ public class CityListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return mCities == null ? 0: mCities.size();
+        return mCities == null ? 0 : mCities.size();
     }
 
     @Override
@@ -104,12 +114,12 @@ public class CityListAdapter extends BaseAdapter {
     public View getView(final int position, View view, ViewGroup parent) {
         CityViewHolder holder;
         int viewType = getItemViewType(position);
-        switch (viewType){
+        switch (viewType) {
             case 0:     //定位
                 view = inflater.inflate(R.layout.cp_view_locate_city, parent, false);
                 ViewGroup container = (ViewGroup) view.findViewById(R.id.layout_locate);
                 TextView state = (TextView) view.findViewById(R.id.tv_located_city);
-                switch (locateState){
+                switch (locateState) {
                     case LocateState.LOCATING:
                         state.setText(mContext.getString(R.string.cp_locating));
                         break;
@@ -123,14 +133,14 @@ public class CityListAdapter extends BaseAdapter {
                 container.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (locateState == LocateState.FAILED){
+                        if (locateState == LocateState.FAILED) {
                             //重新定位
-                            if (onCityClickListener != null){
+                            if (onCityClickListener != null) {
                                 onCityClickListener.onLocateClick();
                             }
-                        }else if (locateState == LocateState.SUCCESS){
+                        } else if (locateState == LocateState.SUCCESS) {
                             //返回定位城市
-                            if (onCityClickListener != null){
+                            if (onCityClickListener != null) {
                                 onCityClickListener.onCityClick(locatedCity);
                             }
                         }
@@ -145,37 +155,37 @@ public class CityListAdapter extends BaseAdapter {
                 gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        if (onCityClickListener != null){
+                        if (onCityClickListener != null) {
                             onCityClickListener.onCityClick(hotCityGridAdapter.getItem(position));
                         }
                     }
                 });
                 break;
             case 2:     //所有
-                if (view == null){
+                if (view == null) {
                     view = inflater.inflate(R.layout.cp_item_city_listview, parent, false);
                     holder = new CityViewHolder();
                     holder.letter = (TextView) view.findViewById(R.id.tv_item_city_listview_letter);
                     holder.name = (TextView) view.findViewById(R.id.tv_item_city_listview_name);
                     view.setTag(holder);
-                }else{
+                } else {
                     holder = (CityViewHolder) view.getTag();
                 }
-                if (position >= 1){
+                if (position >= 1) {
                     final String city = mCities.get(position).getName();
                     holder.name.setText(city);
                     String currentLetter = PinyinUtils.getFirstLetter(mCities.get(position).getPinyin());
                     String previousLetter = position >= 1 ? PinyinUtils.getFirstLetter(mCities.get(position - 1).getPinyin()) : "";
-                    if (!TextUtils.equals(currentLetter, previousLetter)){
+                    if (!TextUtils.equals(currentLetter, previousLetter)) {
                         holder.letter.setVisibility(View.VISIBLE);
                         holder.letter.setText(currentLetter);
-                    }else{
+                    } else {
                         holder.letter.setVisibility(View.GONE);
                     }
                     holder.name.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            if (onCityClickListener != null){
+                            if (onCityClickListener != null) {
                                 onCityClickListener.onCityClick(city);
                             }
                         }
@@ -186,17 +196,18 @@ public class CityListAdapter extends BaseAdapter {
         return view;
     }
 
-    public static class CityViewHolder{
+    public static class CityViewHolder {
         TextView letter;
         TextView name;
     }
 
-    public void setOnCityClickListener(OnCityClickListener listener){
+    public void setOnCityClickListener(OnCityClickListener listener) {
         this.onCityClickListener = listener;
     }
 
-    public interface OnCityClickListener{
+    public interface OnCityClickListener {
         void onCityClick(String name);
+
         void onLocateClick();
     }
 }

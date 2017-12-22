@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.ysr.citypicker.CityPickerActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,10 +21,8 @@ public class MainActivity extends AppCompatActivity {
         tv_click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                ARouter.getInstance().build("/lib/CityPickerActivity").navigation();
-                ARouter.getInstance().build("/lib/CityPickerActivity").navigation(MainActivity.this, REQUEST_CODE_PICK_CITY);
-//                startActivityForResult(new Intent(MainActivity.this, CityPickerActivity.class),
-//                        REQUEST_CODE_PICK_CITY);
+                startActivityForResult(new Intent(MainActivity.this, CityPickerActivity.class),
+                        REQUEST_CODE_PICK_CITY);
             }
         });
     }

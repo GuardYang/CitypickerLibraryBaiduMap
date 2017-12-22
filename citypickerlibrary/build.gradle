@@ -36,4 +36,5 @@ dependencies {
     compile 'com.alibaba:arouter-api:1.2.1.1'
     annotationProcessor 'com.alibaba:arouter-compiler:1.1.2.1'
     compile files('lib/BaiduLBS_Android.jar')
+    compile files('lib/fastjson-1.2.33.jar')
 }
