@@ -11,6 +11,16 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    aaptOptions {
+       cruncherEnabled = false
+       useNewCruncher = false
+    }
+   lintOptions {
+    //build release 版本 时 开启lint 检测
+    checkReleaseBuilds false
+    //lint 遇到 error 时继续 构建
+    abortOnError false
+}
     buildTypes {
         release {
             minifyEnabled false
